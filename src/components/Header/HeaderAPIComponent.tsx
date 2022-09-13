@@ -7,10 +7,10 @@ import {usersAPI} from "../../api/api";
 class HeaderAPIComponent extends React.Component {
     props: any
 
-    componentDidMount() {
+   /* componentDidMount() {
         this.props.authMe()
     }
-
+    */
     render() {
         return (
             <Header {...this.props}/>

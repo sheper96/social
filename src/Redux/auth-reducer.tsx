@@ -1,4 +1,5 @@
 import {authAPI} from "../api/api";
+import {AnyAction, Dispatch} from "redux";
 
 const SET_USER_DATA = "SET_USER_DATA";
 
@@ -41,8 +42,8 @@ export const setUserData = (userId: number | null, email: string | null, login: 
 }
 
 export const authThunkCreator  = ()=> {
-    return (dispatch: any) => {
-        authAPI.authMe().then(response => {
+    return (dispatch: Dispatch<AnyAction>) => {
+      return authAPI.authMe().then(response => {
             if (response.resultCode === 0) {
                 let {id, email, login} = response.data;
                 dispatch(setUserData(id, email, login, true))
@@ -52,12 +53,15 @@ export const authThunkCreator  = ()=> {
     }
 }
 
-export const loginThunkCreator  = (email:string,password:string,rememberMe:boolean)=> {
+export const loginThunkCreator  = (email:string,password:string,rememberMe:boolean, setStatus:any)=> {
     return (dispatch: any) => {
         authAPI.login(email,password,rememberMe).then(response => {
             if (response.data.resultCode === 0) {
                dispatch(authThunkCreator())
 
+            }
+            else {
+                setStatus(response.data.messages)
             }
         })
     }

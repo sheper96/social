@@ -35,9 +35,7 @@ class ProfileAPIComponent extends React.Component {
 
     componentDidMount() {
         let userId = this.props.router.params.userId
-        if (!userId) {
-            userId = 9390
-        }
+
         this.props.getUserProfile(userId)
         this.props.getUserStatus(userId)
 
@@ -45,6 +43,8 @@ class ProfileAPIComponent extends React.Component {
 
 
     render() {
+
+
         return (
             <Profile profile={this.props.profile}
                      statusValue={this.props.statusValue}
@@ -62,6 +62,7 @@ const mapStateToProps = (state: any) => {
     return {
         profile: state.profilePage.profile,
         statusValue: state.profilePage.statusValue,
+        isAuth: state.auth.isAuth
     }
 }
 /*
@@ -82,4 +83,4 @@ export default compose<React.ComponentType>(connect(mapStateToProps, {
     updateStatus : updateStatusThunkCreator,
     setProfileStatus,
     addPostFormik:addPostFormikActionCreator
-}),withRouter)(ProfileAPIComponent);
+}),withRouter,WithAuthRedirect)(ProfileAPIComponent);

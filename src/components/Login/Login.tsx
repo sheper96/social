@@ -6,9 +6,6 @@ import {loginThunkCreator} from "../../Redux/auth-reducer";
 import {Navigate} from "react-router-dom";
 
 const Login = (props:any) => {
-    let setLogin = (login:string) => {
-        props.setLogin(login)
-    }
 
     if (props.isAuth) return <Navigate to={'/profile'}/>
 
@@ -17,14 +14,14 @@ const Login = (props:any) => {
             <h1>My Form</h1>
             <Formik
                 initialValues={{login: 'ssss', password: 'password' , toggle:false}}
-                onSubmit={(values, actions) => {
-                   /* console.log(values.login)
-                    setLogin(values.login)*/
-                    props.login(values.login , values.password , values.toggle)
+                onSubmit={(values,  { setSubmitting, setStatus }) => {
+                    props.login(values.login , values.password , values.toggle, setStatus)
+                    setSubmitting(false);
                 }}
             >
                 {props => (
                     <Form onSubmit={props.handleSubmit}>
+
                         <input
                             type="email"
                             onChange={props.handleChange}
@@ -39,6 +36,9 @@ const Login = (props:any) => {
                             value={props.values.password}
                             name="password"
                         />
+                        <div>
+                            {props.status}
+                            </div>
                         <label>
                             <Field type="checkbox" name="toggle" />
 
@@ -61,9 +61,9 @@ const mapDispatchToProps = (dispatch:any) => {
         setLogin: (login: string) => {
             dispatch(setLoginAC(login))
         },
-        login : (email:string,password:string,rememberMe:boolean) =>{
+        login : (email:string,password:string,rememberMe:boolean,setStatus:any) =>{
             debugger
-            dispatch(loginThunkCreator(email,password,rememberMe))
+            dispatch(loginThunkCreator(email,password,rememberMe,setStatus))
         }
 
     }

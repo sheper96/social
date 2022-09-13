@@ -15,7 +15,7 @@ let initialState = {
     ],
     value: '',
     profile :null,
-    statusValue:"123",
+    statusValue:"",
     login: '123',
     password: '123',
 
@@ -52,6 +52,7 @@ let profileReducer = (state = initialState,action: any)=>{
             return {...state,profile : action.profile};
         }
         case SETSTATUS : {
+            debugger
             return {...state,statusValue : action.statusValue};
         }
         case SETLOGIN : {
@@ -110,7 +111,7 @@ export const setLoginAC = (login:string) => {
 
 export const getUserProfileThunkCreator = (userId:number) => {
     return (dispatch: any) => {
-        usersAPI.getProfile(userId).then(response =>{
+            usersAPI.getProfile(userId).then(response =>{
             dispatch(setUserProfile(response.data))
         })
     }

@@ -1,4 +1,4 @@
-import {useState} from "react";
+import {useEffect, useState} from "react";
 
 
 type ProfileStatusPropsType = {
@@ -10,25 +10,35 @@ type ProfileStatusPropsType = {
 
 const ProfileStatus = (props: ProfileStatusPropsType) => {
 
+    debugger
     const [editMode, setEditMode] = useState(false)
+    const [status, setStatus] = useState( props.status)
 
+    console.log(status)
+    console.log(props.status)
+
+    useEffect(()=>{
+        setStatus( props.status)
+    },[props.status])
 
     const setStatusHandler = (e: any) => {
-        props.setProfileStatus(e.currentTarget.value)
+        //props.setProfileStatus(e.currentTarget.value)
+        setStatus(e.currentTarget.value)
     }
 
     const updateStatusHandler = ()=>{
-        setEditMode(!editMode)
-        props.updateStatus(props.status)
+        setEditMode(false)
+        props.updateStatus(status)
+        console.log(status)
     }
 
     return (<div>
             <div>
-                {!editMode && <span onDoubleClick={() => setEditMode(!editMode)}>{props.status || 'update status'}</span>}
+                {!editMode && <span onDoubleClick={() => setEditMode(true)}>{props.status || 'update status'}</span>}
             </div>
             <div>
                 {editMode &&
-                    <input type="text" value={props.status} autoFocus onChange={setStatusHandler}
+                    <input type="text" value={status} autoFocus onChange={setStatusHandler}
                            onBlur={updateStatusHandler}/>
                 }
             </div>
